@@ -1,7 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
+import { getProduct  } from '../../api/productAPI';
+
 
 const SampleNextArrow = (props) => {
   const { onClick } = props
@@ -23,8 +25,22 @@ const SamplePrevArrow = (props) => {
     </div>
   )
 }
-const FlashCard = ({ productItems, addToCart }) => {
+const FlashCard = ({ addToCart }) => {
   const [count, setCount] = useState(0)
+  const [productItems, setProductItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getProduct();
+        setProductItems(data);
+      } catch (error) {
+        console.error("Erro ao buscar dados da API:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   const increment = () => {
     setCount(count + 1)
   }
@@ -41,20 +57,21 @@ const FlashCard = ({ productItems, addToCart }) => {
   return (
     <>
       <Slider {...settings}>
-        {productItems.map((productItems) => {
+        
+        {productItems.map((product) => {
           return (
             <div className='box'>
               <div className='product mtop'>
                 <div className='img'>
-                  <span className='discount'>{productItems.discount}% Off</span>
-                  <img src={productItems.cover} alt='' />
+                  <span className='discount'>{product.discount}% Off</span>
+                  <img src={product.ProdutoImagems && product.ProdutoImagems.length > 0 ? './images/flash/' + product.ProdutoImagems[0].ImageURL : 'URL_PADRAO_PARA_IMAGEM_SEM_URL'} alt='' />
                   <div className='product-like'>
                     <label>{count}</label> <br />
                     <i className='fa-regular fa-heart' onClick={increment}></i>
                   </div>
                 </div>
                 <div className='product-details'>
-                  <h3>{productItems.name}</h3>
+                  <h3>{product.Nome}</h3>
                   <div className='rate'>
                     <i className='fa fa-star'></i>
                     <i className='fa fa-star'></i>
@@ -63,11 +80,11 @@ const FlashCard = ({ productItems, addToCart }) => {
                     <i className='fa fa-star'></i>
                   </div>
                   <div className='price'>
-                    <h4>R${productItems.price},00 </h4>
+                    <h4>R${product.Valor}</h4>
                     {/* step : 3  
                      if hami le button ma click garryo bahne 
                     */}
-                    <button onClick={() => addToCart(productItems)}>
+                    <button onClick={() => addToCart(product)}>
                       <i className='fa fa-plus'></i>
                     </button>
                   </div>

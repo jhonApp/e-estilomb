@@ -3,8 +3,7 @@ import "./style.css"
 
 const Cart = ({ CartItem, addToCart, decreaseQty }) => {
   // Stpe: 7   calucate total of items
-  const totalPrice = CartItem.reduce((price, item) => price + item.qty * item.price, 0)
-
+  const totalPrice = CartItem.reduce((price, item) => price + item.qty * item.Valor, 0)
   // prodcut qty total
   return (
     <>
@@ -13,22 +12,22 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
           {/* if hamro cart ma kunai pani item xaina bhane no diplay */}
 
           <div className='cart-details'>
-            {CartItem.length === 0 && <h1 className='no-items product'>No Items are add in Cart</h1>}
+            {CartItem.length === 0 && <h1 className='no-items product'>Nenhum item adicionado no carrinho</h1>}
 
             {/* yasma hami le cart item lai display garaaxa */}
             {CartItem.map((item) => {
-              const productQty = item.price * item.qty
+              const productQty = item.Valor * item.qty
 
               return (
-                <div className='cart-list product d_flex' key={item.id}>
+                <div className='cart-list product d_flex' key={item.ID}>
                   <div className='img'>
-                    <img src={item.cover} alt='' />
+                    <img src={item.ProdutoImagems && item.ProdutoImagems.length > 0 ? './images/flash/' + item.ProdutoImagems[0].ImageURL : 'URL_PADRAO_PARA_IMAGEM_SEM_URL'} alt='' />
                   </div>
                   <div className='cart-details'>
-                    <h3>{item.name}</h3>
+                    <h3>{item.Nome}</h3>
                     <h4>
-                      ${item.price}.00 * {item.qty}
-                      <span>${productQty}.00</span>
+                      R$ {item.Valor}
+                      <span>R$ {productQty}</span>
                     </h4>
                   </div>
                   <div className='cart-items-function'>
@@ -59,8 +58,8 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
           <div className='cart-total product'>
             <h2>Cart Summary</h2>
             <div className=' d_flex'>
-              <h4>Total Price :</h4>
-              <h3>${totalPrice}.00</h3>
+              <h4>Valor Total:</h4>
+              <h3>R${totalPrice}</h3>
             </div>
           </div>
         </div>

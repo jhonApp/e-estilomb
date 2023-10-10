@@ -1,14 +1,10 @@
-const { Produto, ProdutoImagem } = require('../models/products');
+const { ProdutoImagem } = require('../models/products');
 
 module.exports = {
   async List(req, res) {
     try {
-      const products = await Produto.findAll({
-        attributes: ['ID', 'Nome', 'Descricao', 'Valor', 'Status'], // Especifique os campos que você quer selecionar
-        include: {
-          model: ProdutoImagem,
-          attributes: ['ID', 'CorID', 'ImageURL', 'Status'] // Especifique os campos da tabela Produto.Imagem que você deseja incluir
-        }
+      const products = await ProdutoImagem.findAll({
+        attributes: ['ID', 'CorID', 'ProdutoID', 'ImageURL', 'Status'], // Especifique os campos que você quer selecionar
       });
       return res.json(products);
     } catch (error) {
@@ -19,13 +15,13 @@ module.exports = {
 
   async Create(req, res) {
     try {
-      const { ID, Nome, Descricao, Valor, Status } = req.body;
+      const { ID, CorID, ProdutoID, ImageURL, Status } = req.body;
   
       const product = await Produto.create({
         ID,
-        Nome,
-        Descricao,
-        Valor,
+        CorID,
+        ProdutoID,
+        ImageURL,
         Status
       });
   
@@ -39,17 +35,18 @@ module.exports = {
   async Update(req, res) {
     try {
         console.log("ID do produto a ser atualizado:", req.body);
-        const prod = await Produto.findByPk(req.body.ID);
+        const prod = await ProdutoImagem.findByPk(req.body.ID);
 
         if (prod) {
-            prod.Nome = req.body.Nome;
-            prod.Descricao = req.body.Descricao;
-            prod.Valor = req.body.Valor;
+            // Atualize os campos do objeto prod com os valores do req.body
+            prod.CorID = req.body.CorID;
+            prod.ProdutoID = req.body.ProdutoID;
+            prod.ImageURL = req.body.ImageURL;
             prod.Status = req.body.Status;
-            
-            await prod.save();
 
-            // Retorna o produto atualizado (incluindo as imagens)
+            // Salve as alterações no banco de dados usando o método save()
+            await prod.save();
+            
             return res.json(prod);
         } else {
             return res.status(404).json({ error: "Produto não encontrado" });
@@ -63,7 +60,7 @@ module.exports = {
 
   async GetOne(req, res) {
     try {
-        const prod = await Produto.findByPk(req.body.ID);
+        const prod = await ProdutoImagem.findByPk(req.body.ID);
         
         return res.json(prod);
 
@@ -75,7 +72,7 @@ module.exports = {
 
   async Delete(req, res) {
     try {
-        const prod = await Produto.findByPk(req.body.ID);
+        const prod = await ProdutoImagem.findByPk(req.body.ID);
         await prod.destroy();
         return res.json(prod);
 

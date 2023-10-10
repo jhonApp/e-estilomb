@@ -2,7 +2,7 @@ import React from "react"
 import FlashCard from "./FlashCard"
 import "./style.css"
 
-const FlashDeals = ({ productItems, addToCart }) => {
+const FlashDeals = ({ addToCart }) => {
   return (
     <>
       <section className='flash'>
@@ -11,7 +11,7 @@ const FlashDeals = ({ productItems, addToCart }) => {
             <i className='fa fa-bolt'></i>
             <h1>Ofertas relâmpago</h1>
           </div>
-          <FlashCard productItems={productItems} addToCart={addToCart} />
+          <FlashCard addToCart={addToCart} />
         </div>
       </section>
     </>
