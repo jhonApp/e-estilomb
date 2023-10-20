@@ -1,29 +1,25 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react";
 import "./App.css"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Header from "./common/header/Header"
 import Pages from "./pages/Pages"
-import Data from "./components/Data"
+import { fetchDataFromAPI } from './api';
+import Search from "./components/Search/Search"
 import Cart from "./common/Cart/Cart"
 import Footer from "./common/footer/Footer"
 import Sdata from "./components/shops/Sdata"
 
-function App() {
-  /*
-  step1 :  const { productItems } = Data 
-  lai pass garne using props
-  
-  Step 2 : item lai cart ma halne using useState
-  ==> CartItem lai pass garre using props from  <Cart CartItem={CartItem} /> ani import garrxa in cartItem ma
- 
-  Step 3 :  chai flashCard ma xa button ma
 
-  Step 4 :  addToCart lai chai pass garne using props in pages and cart components
-  */
+function App({ initialData }) {
 
-  //Step 1 :
-  const { productItems } = Data
+  const [productItems, setProductItems] = useState(initialData);
+  const [searchResults, setSearchResults] = useState([]);
   const { shopItems } = Sdata
+
+  useEffect(() => {
+    // Use useEffect para atualizar productItems quando initialData mudar
+    setProductItems(initialData);
+  }, [initialData]);
 
   //Step 2 :
   const [CartItem, setCartItem] = useState([])
@@ -58,30 +54,30 @@ function App() {
   // Stpe: 6
   const decreaseQty = (product) => {
     // if hamro product alredy cart xa bhane  find garna help garxa
-    const productExit = CartItem.find((item) => item.id === product.id)
+    const productExit = CartItem.find((item) => item.ID === product.ID)
 
     // if product is exit and its qty is 1 then we will run a fun  setCartItem
     // inside  setCartItem we will run filter to check if item.id is match to product.id
     // if the item.id is doesnt match to product.id then that items are display in cart
     // else
     if (productExit.qty === 1) {
-      setCartItem(CartItem.filter((item) => item.id !== product.id))
+      setCartItem(CartItem.filter((item) => item.ID !== product.ID))
     } else {
       // if product is exit and qty  of that produt is not equal to 1
       // then will run function call setCartItem
       // inside setCartItem we will run map method
       // this map() will check if item.id match to produt.id  then we have to desc the qty of product by 1
-      setCartItem(CartItem.map((item) => (item.id === product.id ? { ...productExit, qty: productExit.qty - 1 } : item)))
+      setCartItem(CartItem.map((item) => (item.ID === product.ID ? { ...productExit, qty: productExit.qty - 1 } : item)))
     }
   }
-
+  
   return (
     <>
       <Router>
-        <Header CartItem={CartItem} />
+        <Header CartItem={CartItem} productItems={productItems} setSearchResults={setSearchResults}/>
         <Switch>
           <Route path='/' exact>
-            <Pages productItems={productItems} addToCart={addToCart} shopItems={shopItems} />
+            <Pages productItems={productItems} addToCart={addToCart} shopItems={shopItems} searchResults={searchResults}/>
           </Route>
           <Route path='/cart' exact>
             <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />

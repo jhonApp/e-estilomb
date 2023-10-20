@@ -1,18 +1,24 @@
-import React from "react"
-import Home from "../components/MainPage/Home"
-import FlashDeals from "../components/flashDeals/FlashDeals"
-import TopCate from "../components/top/TopCate"
-import NewArrivals from "../components/newarrivals/NewArrivals"
-import Discount from "../components/discount/Discount"
-import Shop from "../components/shops/Shop"
-import Annocument from "../components/annocument/Annocument"
-import Wrapper from "../components/wrapper/Wrapper"
+import React from "react";
+import Home from "../components/MainPage/Home";
+import FlashDeals from "../components/flashDeals/FlashDeals";
+import TopCate from "../components/top/TopCate";
+import NewArrivals from "../components/newarrivals/NewArrivals";
+import Discount from "../components/discount/Discount";
+import Shop from "../components/shops/Shop";
+import Search from "../components/Search/Search";
+import Annocument from "../components/annocument/Annocument";
+import Wrapper from "../components/wrapper/Wrapper";
+// import Search from "../common/header/Search";
 
-const Pages = ({ addToCart, CartItem, shopItems }) => {
+const Pages = ({ addToCart, CartItem, shopItems, productItems, searchResults }) => {
+  console.log(searchResults);
+
+  // Se searchResults não estiver vazio, renderize o componente de pesquisa, caso contrário, renderize os componentes normais
   return (
     <>
+      <Search searchResults={searchResults} addToCart={addToCart}/>
       <Home CartItem={CartItem} />
-      <FlashDeals addToCart={addToCart} />
+      <FlashDeals productItems={productItems} addToCart={addToCart} />
       <TopCate />
       <NewArrivals />
       <Discount />
@@ -20,7 +26,7 @@ const Pages = ({ addToCart, CartItem, shopItems }) => {
       <Annocument />
       <Wrapper />
     </>
-  )
-}
+  );
+};
 
-export default Pages
+export default Pages;

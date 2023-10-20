@@ -1,13 +1,37 @@
-import React from "react"
+import React, { useState, useEffect } from 'react';
 import logo from "../../components/assets/images/logo-site.png"
 import { Link } from "react-router-dom"
 
-const Search = ({ CartItem }) => {
-  // fixed Header
-  window.addEventListener("scroll", function () {
-    const search = document.querySelector(".search")
-    search.classList.toggle("active", window.scrollY > 100)
-  })
+const Search = ({ CartItem, productItems, setSearchResults }) => {
+  const [search, setSearch] = useState('');
+
+  const handleSearchChange = (e) => {
+    const searchTerm = e.target.value;
+
+    // Lógica de filtro com base em CartItem e search
+    const filteredResults = productItems.filter(item => {
+      return item.Nome.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+
+    setSearch(searchTerm);
+    setSearchResults(filteredResults);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const searchElement = document.querySelector(".search");
+      if (searchElement) {
+        searchElement.classList.toggle("active", window.scrollY > 100);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // Não é necessário adicionar search, CartItem ou setSearchResults como dependências aqui
 
   return (
     <>
@@ -19,7 +43,7 @@ const Search = ({ CartItem }) => {
 
           <div className='search-box f_flex'>
             <i className='fa fa-search'></i>
-            <input type='text' placeholder='Buscar produto...' />
+            <input type='text' placeholder='Buscar produto...' value={search} onChange={handleSearchChange} />
             <span></span>
           </div>
 
@@ -35,7 +59,7 @@ const Search = ({ CartItem }) => {
         </div>
       </section>
     </>
-  )
+  );
 }
 
-export default Search
+export default Search;

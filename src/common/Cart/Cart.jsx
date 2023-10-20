@@ -26,7 +26,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
                   <div className='cart-details'>
                     <h3>{item.Nome}</h3>
                     <h4>
-                      R$ {item.Valor}
+                      R$ {item.Valor} * {item.qty}
                       <span>R$ {productQty}</span>
                     </h4>
                   </div>
@@ -56,7 +56,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
           </div>
 
           <div className='cart-total product'>
-            <h2>Cart Summary</h2>
+            <h2>Resumo da compra</h2>
             <div className=' d_flex'>
               <h4>Valor Total:</h4>
               <h3>R${totalPrice}</h3>

@@ -1,52 +1,23 @@
-import React, { useState } from "react"
+import React, { useState }  from "react"
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
+import "./Style.css"
 
-const SampleNextArrow = (props) => {
-  const { onClick } = props
-  return (
-    <div className='control-btn' onClick={onClick}>
-      <button className='next'>
-        <i className='fa fa-long-arrow-alt-right'></i>
-      </button>
-    </div>
-  )
-}
-const SamplePrevArrow = (props) => {
-  const { onClick } = props
-  return (
-    <div className='control-btn' onClick={onClick}>
-      <button className='prev'>
-        <i className='fa fa-long-arrow-alt-left'></i>
-      </button>
-    </div>
-  )
-}
-const FlashCard = ({ productItems, addToCart }) => {
+const Search = ({ searchResults, addToCart }) => {
   const [count, setCount] = useState(0)
   const increment = () => {
     setCount(count + 1)
   }
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-  }
-
   return (
     <>
-      <Slider {...settings}>
-          {productItems.map((product) => {
-            return (
-              <div className='box' key={product.ID}>
+      <div className='content grid product'>
+        {searchResults.map((product) => {
+          return (
+            <div className='box' key={product.ID}>
                 <div className='product mtop'>
                   <div className='img'>
-                    <span className='discount'>{product.discount}% Off</span>
+                    {/* <span className='discount'>{product.discount}% Off</span> */}
                     <img src={product.ProdutoImagems && product.ProdutoImagems.length > 0 ? './images/flash/' + product.ProdutoImagems[0].ImageURL : 'URL_PADRAO_PARA_IMAGEM_SEM_URL'} alt='' />
                     <div className='product-like'>
                       <label>{count}</label> <br />
@@ -74,11 +45,11 @@ const FlashCard = ({ productItems, addToCart }) => {
                   </div>
                 </div>
               </div>
-            )
-          })}
-      </Slider>
+          )
+        })}
+      </div>
     </>
   )
 }
 
-export default FlashCard
+export default Search
