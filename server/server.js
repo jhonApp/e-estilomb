@@ -1,5 +1,6 @@
 const express = require('express');
 const database = require('./db');
+const redisClient = require('./redis');
 const routes = require('./routers/router');
 const cors = require('cors');
 
@@ -14,6 +15,12 @@ const allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 };
+
+// Middleware para adicionar o cliente Redis aos objetos de solicitação
+api.use((req, res, next) => {
+  req.redisClient = redisClient;
+  next();
+});
 
 api.use(allowCrossDomain); // Aplica o middleware de CORS
 api.use(routes);
