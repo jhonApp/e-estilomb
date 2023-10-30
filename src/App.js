@@ -3,9 +3,9 @@ import "./App.css"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Header from "./common/header/Header"
 import Pages from "./pages/Pages"
-import { fetchDataFromAPI } from './api';
-import Search from "./components/Search/Search"
-import Cart from "./common/Cart/Cart"
+import CartPage from "./common/Cart/CartPages"
+import User from "./common/User/User"
+import UserHeader from "./common/User/UserHeader"
 import Footer from "./common/footer/Footer"
 import Sdata from "./components/shops/Sdata"
 
@@ -74,13 +74,17 @@ function App({ initialData }) {
   return (
     <>
       <Router>
-        <Header CartItem={CartItem} productItems={productItems} setSearchResults={setSearchResults}/>
         <Switch>
-          <Route path='/' exact>
-            <Pages productItems={productItems} addToCart={addToCart} shopItems={shopItems} searchResults={searchResults}/>
-          </Route>
           <Route path='/cart' exact>
-            <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
+            <CartPage CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
+          </Route>
+          <Route path='/user' exact>
+            <UserHeader/>
+            <User />
+          </Route>
+          <Route path='/' exact>
+            <Header CartItem={CartItem} productItems={productItems} setSearchResults={setSearchResults}/>
+            <Pages productItems={productItems} addToCart={addToCart} shopItems={shopItems} searchResults={searchResults}/>
           </Route>
         </Switch>
         <Footer />
