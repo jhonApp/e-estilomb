@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
-import { fetchDataFromAPI   } from './api';
+import { fetchDataFromAPI } from './api';
 
 
 const initializeApp = async () => {

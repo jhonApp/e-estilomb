@@ -5,9 +5,11 @@ import Header from "./common/header/Header"
 import Pages from "./pages/Pages"
 import CartPage from "./common/Cart/CartPages"
 import User from "./common/User/User"
+import SignUp from "./common/SignUp/SignUp"
 import UserHeader from "./common/User/UserHeader"
 import Footer from "./common/footer/Footer"
 import Sdata from "./components/shops/Sdata"
+import Notification from './notification/notification';
 
 
 function App({ initialData }) {
@@ -26,14 +28,7 @@ function App({ initialData }) {
 
   //Step 4 :
   const addToCart = (product) => {
-    // if hamro product alredy cart xa bhane  find garna help garxa
-    const productExit = CartItem.find((item) => item.ID === product.ID)
-    // if productExit chai alredy exit in cart then will run fun() => setCartItem
-    // ani inside => setCartItem will run => map() ani yo map() chai each cart ma
-    // gayara check garxa if item.id ra product.id chai match bhayo bhane
-    // productExit product chai display garxa
-    // ani increase  exits product QTY by 1
-    // if item and product doesnt match then will add new items
+    const productExit = CartItem.find((item) => item.ID === product.ID);
     
     if (productExit) {
       setCartItem(CartItem.map((item) => {
@@ -45,8 +40,6 @@ function App({ initialData }) {
         }
       }));
     } else {
-      // but if the product doesnt exit in the cart that mean if card is empty
-      // then new product is added in cart  and its qty is initalize to 1
       setCartItem([...CartItem, { ...product, qty: 1 }])
     }
   }
@@ -74,6 +67,7 @@ function App({ initialData }) {
   return (
     <>
       <Router>
+        <Notification /> {/* Include the Notification component */}
         <Switch>
           <Route path='/cart' exact>
             <CartPage CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
@@ -81,6 +75,10 @@ function App({ initialData }) {
           <Route path='/user' exact>
             <UserHeader/>
             <User />
+          </Route>
+          <Route path='/SignUp' exact>
+            <UserHeader/>
+            <SignUp />
           </Route>
           <Route path='/' exact>
             <Header CartItem={CartItem} productItems={productItems} setSearchResults={setSearchResults}/>
