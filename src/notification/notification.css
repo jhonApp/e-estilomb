@@ -1,0 +1,7 @@
+/* Notification.css */
+.toast-success {
+    background-color: #4caf50; /* Defina a cor verde desejada */
+    color: #ffffff; /* Defina a cor do texto, se necessário */
+    width: 100%;
+  }
+  

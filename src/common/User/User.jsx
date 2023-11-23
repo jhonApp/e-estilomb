@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import "./User.css";
 
 const User = () => {
@@ -11,7 +12,7 @@ const User = () => {
           <div className="mb-6">
             <div className="relative">
               <input
-                className="w-full border border-solid border-gray-100 rounded-xl p-3 pl-3 focus:outline-none"
+                className="w-full border border-solid border-gray-300 rounded-xl p-3 pl-3 focus:outline-none"
                 placeholder="Insira seu email"
               />
               <span className="absolute left-3 -mt-3 bg-white font-medium text-gray-500">Email</span>
@@ -20,7 +21,7 @@ const User = () => {
           <div className="mb-6">
             <div className="relative">
               <input
-                className="w-full border border-solid border-gray-100 rounded-xl p-3 pl-3 focus:outline-none"
+                className="w-full border border-solid border-gray-300 rounded-xl p-3 pl-3 focus:outline-none"
                 placeholder="Insira sua senha"
                 type="password"
               />
@@ -38,7 +39,9 @@ const User = () => {
             Entrar
           </button>
           <button className="w-full border-solid border-2 border-purple-500 text-purple-500 rounded-xl p-3 mt-4 focus:outline-none">
-            Cadastre-se
+              <Link to="/SignUp">
+                  Cadastre-se
+              </Link>
           </button>
         </div>
       </div>
