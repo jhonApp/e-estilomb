@@ -1,12 +1,15 @@
 const express = require('express');
 const database = require('./db');
-const redisClient = require('./redis'); // Importe diretamente o cliente Redis
+const redisClient = require('./redis');
 
 const routes = require('./routers/router');
 const cors = require('cors');
+const cookieParser = require('cookie-parser'); // Correção aqui: nome correto do pacote é cookie-parser
+
 
 const api = express();
 api.use(express.json());
+api.use(cookieParser());
 
 // Middleware para permitir solicitações CORS
 const allowCrossDomain = function(req, res, next) {

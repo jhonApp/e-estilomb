@@ -64,3 +64,12 @@ export const basicSchema = yup.object().shape({
       .oneOf([yup.ref("password"), null], "Senha deve ser semelhante a anterior.")
       .required('Campo Obrigatório'),
 });
+
+export const loginSchema = yup.object().shape({
+  email: yup.string().email("Email inválido").required("Campo Obrigatório"),
+  password: yup
+    .string()
+    .min(5, "A senha deve ter pelo menos 5 caracteres.")
+    .matches(passwordRules, "A senha deve ter pelo menos 5 caracteres e incluir pelo menos uma letra.")
+    .required('Campo Obrigatório'),
+});
