@@ -1,8 +1,36 @@
 const { Usuario, Perfil } = require('../models/users');
+const jwt = require('jsonwebtoken');
+const tokenManager = require('../service/token');
+const bcrypt = require('bcrypt');
 const usuarioRedis = require('../controllers/usersRedisController');
+const redisClient = require('../redis');
+const cookie = require('cookie');
 
 
 module.exports = {
+  async Login(req, res) {
+    try {
+      const { Email, Senha } = req.body;
+
+      const user = await Usuario.findOne({ where: { Email: Email } });
+      if(user == null){ res.status(401).json({ message: 'Usuário não encontrado' }); }
+      
+      const match = await bcrypt.compare(Senha, user.Senha);
+      if(!match){ res.status(401).json({ message: 'Senha Inválida' }); }
+
+      // Envie o token de acesso e o refresh token como resposta
+      const token = await tokenManager.createTokenAndCookie(req, res, user);
+  
+      usuarioRedis.Create(user.UsuarioID, user, token);
+  
+      return res.status(200).json({ name: user.Nome, token: token, isAdmin: user.IsAdmin });
+
+    } catch (error) {
+
+      return res.status(500).json({ message: 'errorMessage' });
+    }
+  },
+
   async List(req, res) {
     try {
       const usuario = await Usuario.findAll({
@@ -22,14 +50,14 @@ module.exports = {
   async Create(req, res) {
     try {
       const { UsuarioID, PerfilID, Nome, CPF, Email, Senha, Celular, DataNascimento, IsAdmin, RegistradoEm, AtualizadoEm, Status } = req.body;
-  
+      const hashedSenha = await bcrypt.hash(Senha, 10); // 10 é o custo de hashing, pode ser ajustado conforme necessário
       const usuario = await Usuario.create({
         UsuarioID,
         PerfilID,
         Nome,
         CPF,
         Email,
-        Senha,
+        Senha: hashedSenha,
         Celular,
         DataNascimento,
         IsAdmin,
@@ -38,7 +66,6 @@ module.exports = {
         Status
       });
 
-      usuarioRedis.Create(usuario.UsuarioID, usuario);
       return res.json(usuario);
 
     } catch (error) {

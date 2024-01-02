@@ -1,3 +1,7 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 /*------head-----------*/
 .head {
   background-color: #B583EA;
@@ -44,6 +48,10 @@
 ::placeholder {
   font-size: 15px;
 }
+.user > span{
+  font-size: 15px;
+}
+
 .search-box span {
   width: 20%;
   opacity: 0.5;
@@ -157,6 +165,7 @@ header ul li a:hover {
     font-size: 25px;
     z-index: 999;
   }
+  
   .close {
     right: 45%;
   }

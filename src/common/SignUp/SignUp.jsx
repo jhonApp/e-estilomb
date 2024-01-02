@@ -44,10 +44,6 @@ const SignUp = () => {
       },
   });
 
-  useEffect(() => {
-    console.log(loading); // This will log the updated value
-  }, [loading]);
-
   const handlePhoneNumberChange = (event) => {
       const formattedValue = formatPhoneNumber(event.target.value);
       setFieldValue('phoneNumber', formattedValue);

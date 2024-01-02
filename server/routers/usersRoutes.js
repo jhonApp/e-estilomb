@@ -7,5 +7,6 @@ router.post('/Create', controllerUsuario.Create);
 router.put('/Update', controllerUsuario.Update);
 router.get('/GetOne', controllerUsuario.GetOne);
 router.post('/Delete', controllerUsuario.Delete);
+router.post('/Login', controllerUsuario.Login);
 
 module.exports = router;

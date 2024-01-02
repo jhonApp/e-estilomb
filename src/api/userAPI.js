@@ -32,6 +32,30 @@ async function createUser(userData) {
   }
 }
 
+async function login(userData) {
+  const response = {
+    Data: null,
+    Status: '',
+    Mensagem: ''
+  };
+
+  try {
+    const params = {
+      Email: userData.email,
+      Senha: userData.password
+    };
+
+    response.Data = await userApi.post('/Login', params);
+    response.Status = response.Data.status;
+
+  } catch (error) {
+    response.Status = error.response.status;
+    response.Mensagem = error.message;
+  }
+
+  return response;
+}
+
 async function updateUser(userId, updatedUserData) {
   try {
     const response = await userApi.put(`/Update/${userId}`, updatedUserData);
@@ -62,4 +86,4 @@ function handleApiError(error) {
   }
 }
 
-export { createUser, updateUser, getUsers };
+export { createUser, updateUser, getUsers, login };

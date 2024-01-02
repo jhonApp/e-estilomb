@@ -1,9 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import logo from "../../components/assets/images/logo-site.png"
-import { Link } from "react-router-dom"
+import logo from "../../components/assets/images/logo-site.png";
+import { Link } from "react-router-dom";
+
+const Logo = () => (
+  <div className='logo w-1/5'>
+    <img src={logo} alt='' />
+  </div>
+);
+
+const SearchBox = ({ search, handleSearchChange }) => (
+  <div className='search-box flex w-4/5 h-12 mt-5 ml-4 items-center border border-black rounded-full border-opacity-25'>
+    <i className='fa fa-search w-1/12 text-center text-lg opacity-50'></i>
+    <input
+      type='text'
+      placeholder='Buscar produto...'
+      value={search}
+      onChange={handleSearchChange}
+      className='w-10/12  outline-none placeholder-base'
+    />
+    <span className='w-1/6 opacity-50 border-l border-black p-2'></span>
+  </div>
+);
+
+
+const UserDropdown = ({ userData, isMenuOpen, setIsMenuOpen }) => {
+  return (
+    <>
+      {userData.name ? (
+        <>
+          <div className='user_txt ml-2 flex flex-col items-start'>
+            <span className='text-xs'>Bem-vindo!</span>
+            <span className='text-xs font-semibold'>{userData.name}</span>
+          </div>
+          <div className='user_txt ml-2 flex flex-col items-start'>
+            <div className="dropdown">
+              <i className='fa fa-user icon-circle w-12 h-12 line-height-12 text-center bg-gray-200 rounded-full'></i>
+              <ul className={`absolute mt-2 py-2 bg-white border border-gray-300 shadow-md rounded w-40 ${isMenuOpen ? 'block' : 'hidden'} z-20`}
+                onClick={() => { setIsMenuOpen(false); }}
+              > 
+                <li className="hover:bg-gray-100 px-4 py-2"><Link to="/myConta">Minha Conta</Link></li>
+                <li className="hover:bg-gray-100 px-4 py-2"><Link to="/listaDesejos">Favoritos</Link></li>
+                <li className="hover:bg-gray-100 px-4 py-2"><Link to="/meusPedidos">Meus Pedidos</Link></li>
+                <li className="hover:bg-gray-100 px-4 py-2"><Link to="/sair" className="text-red-500">Sair</Link></li>
+              </ul>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className='user_txt ml-2 flex flex-col items-start'>
+            <span className='text-xs'>Bem-vindo!</span>
+            <span className='text-xs font-semibold whitespace-pre'> Entre ou<br/>cadastre-se </span>
+          </div>
+          <div className='user_txt ml-2 flex flex-col items-start'>
+            <Link to='/user'>
+              <i className='fa fa-user icon-circle w-12 h-12 line-height-12 text-center bg-gray-200 rounded-full'></i>
+            </Link>
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
+const Cart = ({ CartItem }) => (
+  <div className='cart'>
+    <Link to='/cart'>
+      <i className='fa fa-shopping-bag icon-circle w-12 h-12 line-height-12 text-center bg-gray-200 rounded-full'></i>
+      <span className='bg-purple-600 w-6 h-6 text-white rounded-full text-center leading-6'>
+        {CartItem.length === 0 ? '0' : CartItem.length}
+      </span>
+    </Link>
+  </div>
+);
 
 const Search = ({ CartItem, productItems, setSearchResults }) => {
   const [search, setSearch] = useState('');
+  const [userData, setUserData] = useState({});
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName.trim() === name) {
+        return decodeURIComponent(cookieValue);
+      }
+    }
+    return null;
+  }
 
   const handleSearchChange = (e) => {
     const searchTerm = e.target.value;
@@ -25,6 +110,11 @@ const Search = ({ CartItem, productItems, setSearchResults }) => {
       }
     };
 
+    const userDataString = getCookie('userData');
+    if (userDataString) {
+      const parsedUserData = JSON.parse(userDataString);
+      setUserData(parsedUserData);
+    }
     window.addEventListener("scroll", handleScroll);
 
     // Cleanup the event listener when the component is unmounted
@@ -33,32 +123,18 @@ const Search = ({ CartItem, productItems, setSearchResults }) => {
     };
   }, []); // Não é necessário adicionar search, CartItem ou setSearchResults como dependências aqui
 
+
   return (
     <>
       <section className='search'>
-        <div className='container c_flex'>
-          <div className='logo width '>
-            <img src={logo} alt='' />
-          </div>
-
-          <div className='search-box f_flex'>
-            <i className='fa fa-search'></i>
-            <input type='text' placeholder='Buscar produto...' value={search} onChange={handleSearchChange} />
-            <span></span>
-          </div>
-
-          <div className='icon f_flex width'>
-            <div className='user'>
-                <Link to='/user'>
-                  <i className='fa fa-user icon-circle'></i>
-                </Link>
+        <div className='container flex justify-between'>
+          <Logo />
+          <SearchBox search={search} handleSearchChange={handleSearchChange} />
+          <div className='icon flex w-1/4 items-center justify-end'>
+            <div className='user flex items-center'>
+              <UserDropdown userData={userData} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
             </div>
-            <div className='cart'>
-              <Link to='/cart'>
-                <i className='fa fa-shopping-bag icon-circle'></i>
-                <span>{CartItem.length === 0 ? "0" : CartItem.length}</span>
-              </Link>
-            </div>
+            <Cart CartItem={CartItem} />
           </div>
         </div>
       </section>
