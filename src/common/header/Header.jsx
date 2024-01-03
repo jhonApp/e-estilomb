@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import "./Header.css"
-import Head from "./Head"
-import Search from "./Search"
-import Navbar from "./Navbar"
+import Head from "./head/index"
+import Search from "./search/index"
+import Navbar from "./navbar/index"
 
 const Header = ({ CartItem, productItems, searchResults, setSearchResults }) => {
   return (
