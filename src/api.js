@@ -1,4 +1,4 @@
-import { getProduct  } from './api/productAPI';
+import { getProduct  } from './rest_api/productAPI';
 
 export const fetchDataFromAPI = async () => {
     try {

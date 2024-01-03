@@ -10,6 +10,7 @@ import UserHeader from "./common/User/UserHeader"
 import Footer from "./common/footer/Footer"
 import Sdata from "./components/shops/Sdata"
 import Notification from './notification/notification';
+import SearchResults from './common/header/search/searchResult';
 
 
 function App({ initialData }) {
@@ -80,8 +81,15 @@ function App({ initialData }) {
             <UserHeader/>
             <SignUp />
           </Route>
+          <Route path='/busca' render={({ location }) => {
+            const searchParams = new URLSearchParams(location.search);
+            const query = searchParams.get('q');
+            const page = searchParams.get('page');
+
+            return <SearchResults query={query} page={page} addToCart={addToCart}/>;
+          }} />
           <Route path='/' exact>
-            <Header CartItem={CartItem} productItems={productItems} setSearchResults={setSearchResults}/>
+            <Header CartItem={CartItem} productItems={productItems} />
             <Pages productItems={productItems} addToCart={addToCart} shopItems={shopItems} searchResults={searchResults}/>
           </Route>
         </Switch>
