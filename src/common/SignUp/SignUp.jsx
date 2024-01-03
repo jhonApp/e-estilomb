@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { basicSchema } from "../schemas";
 import { formatPhoneNumber } from '../formats';
 import { formatCPF } from '../formats';
-import { createUser } from '../../api/userAPI';
+import { createUser } from '../../rest_api/userAPI';
 import Loading from '../../Loading';
 import { success as notifySuccess, error as notifyError } from '../../notification/notification'; // Importe ambas as funções success e error
 import "./SignUp.css";

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useFormik } from "formik";
 import { loginSchema } from "../schemas";
 import { Link } from 'react-router-dom';
-import { login } from '../../api/userAPI';
+import { login } from '../../rest_api/userAPI';
 import Loading from '../../Loading';
 import { useHistory } from 'react-router-dom';
 import { success as notifySuccess, error as notifyError } from '../../notification/notification'; // Importe ambas as funções success e error
