@@ -4,8 +4,7 @@ import SearchBox from "./searchBox"
 import UserMenu from "./userMenu"
 import Cart from "./cart"
 
-const Search = ({ CartItem, productItems, setSearchResults }) => {
-  const [search, setSearch] = useState('');
+const Search = ({ CartItem }) => {
   const [userData, setUserData] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -19,18 +18,6 @@ const Search = ({ CartItem, productItems, setSearchResults }) => {
     }
     return null;
   }
-
-  const handleSearchChange = (e) => {
-    const searchTerm = e.target.value;
-
-    // Lógica de filtro com base em CartItem e search
-    const filteredResults = productItems.filter(item => {
-      return item.Nome.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-
-    setSearch(searchTerm);
-    setSearchResults(filteredResults);
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +45,7 @@ const Search = ({ CartItem, productItems, setSearchResults }) => {
       <section className='search'>
         <div className='container flex justify-between'>
           <Logo />
-          <SearchBox search={search} handleSearchChange={handleSearchChange} />
+          <SearchBox />
           <div className='icon flex w-1/4 items-center justify-end'>
             <div className='user flex items-center'>
               <UserMenu userData={userData} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
