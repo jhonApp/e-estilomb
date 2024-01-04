@@ -4,11 +4,11 @@ import Head from "./head/index"
 import Search from "./search/index"
 import Navbar from "./navbar/index"
 
-const Header = ({ CartItem, productItems, searchResults, setSearchResults }) => {
+const Header = ({ CartItem }) => {
   return (
     <>
       <Head />
-      <Search CartItem={CartItem} productItems={productItems} searchResults={searchResults} setSearchResults={setSearchResults} />
+      <Search CartItem={CartItem} />
       <Navbar />
     </>
   );
